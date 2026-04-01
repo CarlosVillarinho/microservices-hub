@@ -8,6 +8,7 @@ import com.github.cidarosa.ms.pedidos.entities.Status;
 import com.github.cidarosa.ms.pedidos.exceptions.ResourceNotFoundException;
 import com.github.cidarosa.ms.pedidos.repositories.ItemDoPedidoRepository;
 import com.github.cidarosa.ms.pedidos.repositories.PedidoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +43,7 @@ public class PedidoService {
     }
 
     @Transactional
-    private PedidoDto savePedido(PedidoDto pedidoDto){
+    public PedidoDto savePedido(PedidoDto pedidoDto) {
 
         Pedido pedido = new Pedido();
         pedido.setData(LocalDate.now());
@@ -53,12 +54,37 @@ public class PedidoService {
         return new PedidoDto(pedido);
     }
 
+    @Transactional
+    public PedidoDto updatePedido(Long id, PedidoDto pedidoDto) {
+
+        try {
+            Pedido pedido = pedidoRepository.getReferenceById(id);
+            pedido.getItens().clear();
+            pedido.setData(LocalDate.now());
+            pedido.setStatus(Status.CRIADO);
+            mapDtoToPedido(pedidoDto, pedido);
+            pedido.calcularValorTotalDoPedido();
+            pedido = pedidoRepository.save(pedido);
+            return new PedidoDto(pedido);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Recurso não encontrado. Id: " + id);
+        }
+    }
+
+    public void deletePedidoById(Long id){
+        if(!pedidoRepository.existsById(id)){
+            throw new ResourceNotFoundException("Recurso não encontrado. Id: " + id);
+        }
+
+        pedidoRepository.deleteById(id);
+    }
+
     private void mapDtoToPedido(PedidoDto pedidoDto, Pedido pedido) {
 
         pedido.setNome(pedidoDto.getNome());
         pedido.setCpf(pedidoDto.getCpf());
 
-        for (ItemDoPedidoDto itemDTO : pedidoDto.getItens()){
+        for (ItemDoPedidoDto itemDTO : pedidoDto.getItens()) {
 
             ItemDoPedido itemPedido = new ItemDoPedido();
             itemPedido.setQuantidade(itemDTO.getQuantidade());
