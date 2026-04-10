@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Getter
 public class ItemDoPedidoDto {
-
+    //ATRIBUTOS
     private Long id;
 
     @NotNull(message = "Quantidade requerida")

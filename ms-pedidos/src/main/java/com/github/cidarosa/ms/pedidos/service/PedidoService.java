@@ -25,16 +25,15 @@ public class PedidoService {
     @Autowired
     private ItemDoPedidoRepository itemDoPedidoRepository;
 
+    //METODOS ->
     @Transactional(readOnly = true)
     public List<PedidoDto> findAllPedidos() {
-
         return pedidoRepository.findAll()
                 .stream().map(PedidoDto::new).toList();
     }
 
     @Transactional(readOnly = true)
     public PedidoDto findPedidoById(Long id) {
-
         Pedido pedido = pedidoRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado. Id: " + id)
         );
@@ -44,7 +43,6 @@ public class PedidoService {
 
     @Transactional
     public PedidoDto savePedido(PedidoDto pedidoDto) {
-
         Pedido pedido = new Pedido();
         pedido.setData(LocalDate.now());
         pedido.setStatus(Status.CRIADO);
@@ -56,7 +54,6 @@ public class PedidoService {
 
     @Transactional
     public PedidoDto updatePedido(Long id, PedidoDto pedidoDto) {
-
         try {
             Pedido pedido = pedidoRepository.getReferenceById(id);
             pedido.getItens().clear();
@@ -80,7 +77,6 @@ public class PedidoService {
     }
 
     private void mapDtoToPedido(PedidoDto pedidoDto, Pedido pedido) {
-
         pedido.setNome(pedidoDto.getNome());
         pedido.setCpf(pedidoDto.getCpf());
 
@@ -95,5 +91,4 @@ public class PedidoService {
             pedido.getItens().add(itemPedido);
         }
     }
-
 }

@@ -18,25 +18,27 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
+    //METODOS ->
+
+    //BUSCA TODOS OS PEDIDOS
     @GetMapping
     private ResponseEntity<List<PedidoDto>> getAllPedidos(){
-
         List<PedidoDto> list = pedidoService.findAllPedidos();
 
         return ResponseEntity.ok(list);
     }
 
+    //BUSCA TODOS OS PEDIDOS PELO ID
     @GetMapping("/{id}")
     public ResponseEntity<PedidoDto> getPedido(@PathVariable Long id){
-
         PedidoDto pedidoDto = pedidoService.findPedidoById(id);
 
         return ResponseEntity.ok(pedidoDto);
     }
 
+    //CRIA UM PEDIDO
     @PostMapping
     public ResponseEntity<PedidoDto> createPedido(@RequestBody @Valid PedidoDto pedidoDto){
-
         pedidoDto = pedidoService.savePedido(pedidoDto);
 
         URI uri = ServletUriComponentsBuilder
@@ -48,6 +50,7 @@ public class PedidoController {
         return ResponseEntity.created(uri).body(pedidoDto);
     }
 
+    //ATUALIZA UM PEDIDO
     @PutMapping("/{id}")
     public ResponseEntity<PedidoDto> updatePedido(@PathVariable Long id,
                                                   @Valid @RequestBody PedidoDto pedidoDto){
@@ -57,6 +60,7 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoDto);
     }
 
+    //DELETA UM PEDIDO
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePedido(@PathVariable Long id){
 
@@ -64,5 +68,4 @@ public class PedidoController {
         
         return ResponseEntity.noContent().build();
     }
-
 }

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class StatusDto {
-
+    //ATRIBUTOS
     private Status status;
 }
