@@ -1,2 +1,0 @@
- INSERT INTO tb_pagamento (valor, nome, numero_cartao, validade, codigo_seguranca, status, pedido_id) VALUES (150.75, 'João Silva', '1234567812345678', '12/28', '123', 'CRIADO', 1);
- INSERT INTO tb_pagamento (valor, nome, numero_cartao, validade, codigo_seguranca, status, pedido_id) VALUES (1500.00, 'Carlos Eduardo', '5544332211223344', '10/27', '789', 'CRIADO', 2);
