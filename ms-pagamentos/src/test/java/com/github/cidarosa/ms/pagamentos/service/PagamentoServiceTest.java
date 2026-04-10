@@ -1,7 +1,9 @@
 package com.github.cidarosa.ms.pagamentos.service;
 
+import com.github.cidarosa.ms.pagamentos.entities.Pagamento;
 import com.github.cidarosa.ms.pagamentos.exceptions.ResourceNotFoundException;
 import com.github.cidarosa.ms.pagamentos.repository.PagamentoRepository;
+import com.github.cidarosa.ms.pagamentos.tests.Factory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,8 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.lang.module.ResolutionException;
 
 @ExtendWith(MockitoExtension.class)
 public class PagamentoServiceTest {
@@ -26,11 +26,14 @@ public class PagamentoServiceTest {
     private Long existingId;
     private Long noExistingId;
 
+    private Pagamento pagamento;
+
     @BeforeEach
     void setUp(){
         existingId = 1L;
-
         noExistingId = Long.MAX_VALUE;
+
+        pagamento = Factory.createPagamento();
     }
 
     @Test
@@ -57,6 +60,6 @@ public class PagamentoServiceTest {
         Mockito.verify(pagamentoRepository).existsById(noExistingId);
 
         Mockito.verify(pagamentoRepository,Mockito.never()).deleteById(Mockito.anyLong());
-        }
     }
+}
 
